@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Codex Academy - Ficha de Treino</title>
+  
+  <!-- Web App Manifest & Mobile Meta -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#c8b288">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Codex Academy">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Fonts: Vintage Typewriter, Athletic Headline, Digital Casio & Realistic Script Signature -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Oswald:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            retro: ['"Courier Prime"', 'monospace'],
+            athletic: ['"Oswald"', 'sans-serif'],
+            script: ['"Caveat"', 'cursive'],
+            lcd: ['"Share Tech Mono"', 'monospace']
+          },
+          colors: {
+            cardboard: '#d8c59f',
+            cardboardDark: '#c2ae87',
+            cardboardLight: '#e4d3af',
+            inkBlue: '#15317e',
+            inkStampRed: '#a82020',
+            inkStampGreen: '#196f3d',
+            carbonPaper: '#2b261f'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Cardboard texture & lined sheet effect */
+    body {
+      background-color: #1a1612;
+      background-image: radial-gradient(#2f281e 1px, transparent 1px), radial-gradient(#221d15 1px, #14110d 100%);
+      background-size: 24px 24px, 100% 100%;
+      overscroll-behavior-y: contain;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .paper-card {
+      background-color: #dfceaa;
+      background-image: 
+        linear-gradient(to bottom, rgba(255,255,255,0.2) 1px, transparent 1px),
+        repeating-linear-gradient(to bottom, transparent, transparent 27px, rgba(100, 140, 180, 0.22) 28px);
+      box-shadow: 
+        0 1px 3px rgba(0,0,0,0.3),
+        0 10px 30px -5px rgba(0,0,0,0.7),
+        inset 0 0 45px rgba(130, 95, 45, 0.35);
+    }
+
+    /* Metal Clip effect */
+    .metal-clip {
+      background: linear-gradient(135deg, #bbb 0%, #eee 40%, #888 60%, #444 100%);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5), inset 0 1px 1px #fff;
+    }
+
+    /* Vintage Rubber Stamp style */
+    .rubber-stamp {
+      display: inline-block;
+      text-transform: uppercase;
+      font-weight: 800;
+      border: 3px solid currentColor;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      letter-spacing: 0.12em;
+      mask-image: radial-gradient(circle, rgba(0,0,0,0.9) 60%, rgba(0,0,0,0.4) 100%);
+      transform: rotate(-3deg);
+      user-select: none;
+    }
+
+    /* Casio LCD Watch screen */
+    .casio-screen {
+      background-color: #7d9675;
+      color: #111e10;
+      text-shadow: 1px 1px 0px rgba(125, 150, 117, 0.8);
+      box-shadow: inset 0 3px 6px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(255,255,255,0.2);
+    }
+
+    /* Stepper buttons touch target */
+    .stepper-btn {
+      touch-action: manipulation;
+    }
+  </style>
+</head>
+<body class="text-carbonPaper font-retro min-h-screen pb-36 antialiased selection:bg-amber-300">
+
+  <!-- TOP APP BAR / INSTALL BAR -->
+  <aside aria-label="Instalação do Aplicativo" class="max-w-md mx-auto px-3 pt-3 flex items-center justify-between text-xs text-amber-200/70">
+    <div class="flex items-center gap-1.5 font-athletic tracking-wide uppercase text-amber-100">
+      <i data-lucide="dumbbell" class="w-4 h-4 text-amber-400"></i>
+      <span>Codex Academy Mobile PWA</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span id="offlineStatus" class="inline-flex items-center gap-1 text-[11px] bg-emerald-950/80 text-emerald-400 px-2 py-0.5 rounded border border-emerald-700/60 font-lcd">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> OFFLINE OK
+      </span>
+      <button id="pwaInstallBtn" onclick="installCodexApp()" class="hidden bg-amber-400 hover:bg-amber-300 text-slate-950 px-2.5 py-1 rounded font-athletic font-bold text-xs uppercase tracking-wide transition shadow">
+        Instalar App
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN VINTAGE CARDBOARD CONTAINER -->
+  <main class="max-w-md mx-auto px-3 pt-2">
+    <div class="paper-card relative rounded-2xl border-2 border-[#b29d72] p-4 sm:p-5 text-carbonPaper overflow-hidden">
+      
+      <!-- Realistic Metal Clip at top center -->
+      <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 w-28 h-7 metal-clip rounded-b-lg border border-gray-400 z-20 flex items-center justify-center">
+        <div class="w-20 h-1.5 bg-black/30 rounded-full"></div>
+      </div>
+
+      <!-- CARD HEADER: CODEX ACADEMY -->
+      <div class="pt-4 border-b-2 border-carbonPaper/30 pb-3">
+        <div class="flex justify-between items-start">
+          <div>
+            <h1 class="font-athletic text-3xl font-black tracking-tight text-carbonPaper uppercase leading-none flex items-center gap-2">
+              CODEX ACADEMY
+            </h1>
+            <p class="text-[11px] tracking-wide text-carbonPaper/80 font-bold uppercase mt-1">
+              Ficha Oficial de Musculação & Periodização
+            </p>
+          </div>
+
+          <!-- Vintage Rubber Stamp -->
+          <div class="rubber-stamp text-inkStampRed border-inkStampRed text-[11px] leading-tight rotate-[-4deg]">
+            APROVADO<br><span class="text-[9px] font-retro font-normal">INTENSIDADE</span>
+          </div>
+        </div>
+
+        <!-- Student Data Sheet (Lined) -->
+        <div class="mt-3 pt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-xs border-t border-dashed border-carbonPaper/30">
+          <div>
+            <span class="font-bold text-[10px] text-carbonPaper/70 uppercase">Aluno:</span>
+            <span class="font-script text-inkBlue text-xl font-bold ml-1">Isaque Santos</span>
+          </div>
+          <div>
+            <span class="font-bold text-[10px] text-carbonPaper/70 uppercase">Peso / Altura:</span>
+            <span class="font-bold ml-1 font-mono">93 kg / 1.69 m</span>
+          </div>
+          <div class="col-span-2">
+            <span class="font-bold text-[10px] text-carbonPaper/70 uppercase">Foco Anatômico:</span>
+            <span class="font-bold ml-1 text-[11px] text-carbonPaper">Peitoral Inf. / Vasto Medial / Antebraço</span>
+          </div>
+          <div class="col-span-2 flex justify-between items-center text-[10px] pt-1 text-carbonPaper/75">
+            <span>Prescrição: <strong>45m Força + 30m Cardio</strong></span>
+            <span class="font-mono">Frequência: <strong>Seg a Sáb (6x)</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY OF THE WEEK SELECTOR (Horizontal touch scroll) -->
+      <div class="my-3">
+        <div class="flex items-center justify-between mb-1.5">
+          <label class="text-[10px] font-bold uppercase tracking-wider text-carbonPaper/80">
+            Selecione o Dia da Ficha:
+          </label>
+          <span id="daySyncIndicator" class="text-[10px] font-mono text-inkBlue font-bold">● Gravado Localmente</span>
+        </div>
+        <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none select-none -mx-1 px-1">
+          <button onclick="changeDay('seg')" id="tab_seg" class="flex-shrink-0 px-2.5 py-1.5 rounded-lg border-2 text-center transition font-athletic tracking-wide">
+            <span class="block text-[10px] opacity-75">SEG</span>
+            <span class="block text-xs font-bold leading-none">PEITO/TRI</span>
+          </button>
+          <button onclick="changeDay('ter')" id="tab_ter" class="flex-shrink-0 px-2.5 py-1.5 rounded-lg border-2 text-center transition font-athletic tracking-wide">
+            <span class="block text-[10px] opacity-75">TER</span>
+            <span class="block text-xs font-bold leading-none">PERNAS</span>
+          </button>
+          <button onclick="changeDay('qua')" id="tab_qua" class="flex-shrink-0 px-2.5 py-1.5 rounded-lg border-2 text-center transition font-athletic tracking-wide">
+            <span class="block text-[10px] opacity-75">QUA</span>
+            <span class="block text-xs font-bold leading-none">COSTAS/BI</span>
+          </button>
+          <button onclick="changeDay('qui')" id="tab_qui" class="flex-shrink-0 px-2.5 py-1.5 rounded-lg border-2 text-center transition font-athletic tracking-wide">
+            <span class="block text-[10px] opacity-75">QUI</span>
+            <span class="block text-xs font-bold leading-none">PEITO/DELT</span>
+          </button>
+          <button onclick="changeDay('sex')" id="tab_sex" class="flex-shrink-0 px-2.5 py-1.5 rounded-lg border-2 text-center transition font-athletic tracking-wide">
+            <span class="block text-[10px] opacity-75">SEX</span>
+            <span class="block text-xs font-bold leading-none">TERRA/POST</span>
+          </button>
+          <button onclick="changeDay('sab')" id="tab_sab" class="flex-shrink-0 px-2.5 py-1.5 rounded-lg border-2 text-center transition font-athletic tracking-wide">
+            <span class="block text-[10px] opacity-75">SÁB</span>
+            <span class="block text-xs font-bold leading-none">PEITO/TRI</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ACTIVE WORKOUT BANNER -->
+      <div class="bg-cardboardLight/90 border border-carbonPaper/30 rounded-xl p-3 shadow-inner my-2">
+        <div class="flex justify-between items-start gap-2">
+          <div>
+            <div id="workoutDayTag" class="text-[10px] font-athletic uppercase text-inkBlue tracking-wider font-bold">SESSÃO A - SEGUNDA-FEIRA</div>
+            <h2 id="workoutDayTitle" class="text-sm font-black font-athletic uppercase text-carbonPaper leading-tight">
+              Peitoral Inferior (Carga) + Tríceps
+            </h2>
+          </div>
+          <button onclick="resetCurrentDay()" title="Zerar vistos do dia" class="text-[10px] font-mono text-carbonPaper/60 hover:text-inkStampRed px-2 py-1 rounded border border-carbonPaper/20 hover:border-inkStampRed bg-cardboard">
+            Limpar Dia
+          </button>
+        </div>
+
+        <!-- Cardio Prescription Box -->
+        <div class="mt-2.5 pt-2 border-t border-carbonPaper/20 flex items-start gap-2 text-xs">
+          <div class="p-1 rounded bg-carbonPaper/10 text-carbonPaper mt-0.5">
+            <i data-lucide="activity" class="w-4 h-4"></i>
+          </div>
+          <div class="flex-1">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-[10px] uppercase tracking-wider text-inkStampGreen">Cardio 30 min Hoje:</span>
+              <button onclick="openCardioPreset()" class="text-[10px] font-bold text-inkBlue underline hover:text-blue-800">
+                Iniciar no Cronômetro ➔
+              </button>
+            </div>
+            <p id="workoutCardioNotes" class="text-[11px] text-carbonPaper/90 leading-tight mt-0.5 font-mono">
+              Esteira Inclinada (8-10%, 5.0-5.5 km/h). Zona 2 contínua.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXERCISES LIST CONTAINER -->
+      <div id="exerciseCardContainer" class="space-y-3.5 my-3">
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <!-- VINTAGE FOOTER SIGNATURES & STAMPS -->
+      <div class="mt-6 pt-4 border-t-2 border-carbonPaper/40 grid grid-cols-2 gap-3 items-end">
+        <!-- Responsible Stamp -->
+        <div class="text-center">
+          <div class="rubber-stamp text-inkStampGreen border-inkStampGreen text-[9px] rotate-[2deg]">
+            RESPONSÁVEL TÉCNICO<br>
+            <strong class="text-[11px] font-athletic">CODEX SYSTEM</strong>
+          </div>
+          <div class="text-[9px] text-carbonPaper/60 uppercase mt-1 font-mono">Registro CREF: 09482-G</div>
+        </div>
+
+        <!-- Authentic Handwritten Signature of Isaque Santos -->
+        <div class="text-center relative">
+          <div class="font-script text-inkBlue text-2xl font-bold tracking-wide -mb-1 transform -rotate-2 select-none">
+            Isaque Santos
+          </div>
+          <div class="border-t border-carbonPaper/60 pt-0.5 text-[9px] uppercase tracking-widest text-carbonPaper/80 font-bold">
+            Assinatura do Aluno
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- RETRO CASIO / BOTTOM FLOATING QUICK DOCK (Mobile Ergonomic) -->
+  <div class="fixed bottom-0 inset-x-0 z-40 bg-[#1e1b16] border-t-2 border-[#b29d72]/60 px-3 py-2 shadow-2xl">
+    <div class="max-w-md mx-auto">
+      
+      <!-- Casio Vintage LCD Screen & Controls -->
+      <div class="flex items-center justify-between gap-2">
+        
+        <!-- Casio Mini Screen -->
+        <div onclick="toggleTimerExpanded()" class="casio-screen rounded-lg px-2.5 py-1.5 flex items-center justify-between flex-1 cursor-pointer border-2 border-[#5a6f54]">
+          <div class="leading-none">
+            <span id="casioModeLabel" class="text-[9px] block uppercase font-bold tracking-tight text-[#1c301a]">DESCANSO</span>
+            <span id="casioTimerDisplay" class="font-lcd text-2xl font-black tracking-widest leading-none">01:30</span>
+          </div>
+          <div class="text-right leading-none">
+            <span id="casioSubLabel" class="text-[8px] block font-mono uppercase text-[#233821]">SERIE / ALVO</span>
+            <span id="casioStatusIcon" class="text-xs font-bold font-mono">PARADO</span>
+          </div>
+        </div>
+
+        <!-- Quick 1-Tap Rest Presets (Big Buttons for Gym) -->
+        <div class="flex gap-1.5">
+          <button onclick="startQuickRest(60)" class="bg-[#3a3225] hover:bg-[#4a4030] active:scale-95 text-amber-200 border border-amber-900/60 px-2.5 py-2 rounded-lg font-athletic font-bold text-xs">
+            60s
+          </button>
+          <button onclick="startQuickRest(90)" class="bg-[#3a3225] hover:bg-[#4a4030] active:scale-95 text-amber-200 border border-amber-900/60 px-2.5 py-2 rounded-lg font-athletic font-bold text-xs">
+            90s
+          </button>
+          <button onclick="startQuickRest(120)" class="bg-[#3a3225] hover:bg-[#4a4030] active:scale-95 text-amber-200 border border-amber-900/60 px-2.5 py-2 rounded-lg font-athletic font-bold text-xs">
+            120s
+          </button>
+        </div>
+
+        <!-- Start/Pause Toggle -->
+        <button id="casioActionBtn" onclick="toggleCasioTimer()" class="bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 p-2.5 rounded-lg font-bold flex items-center justify-center shadow">
+          <i id="casioActionIcon" data-lucide="play" class="w-5 h-5 fill-current"></i>
+        </button>
+      </div>
+
+      <!-- Expandable Cardio & Interval Controls Drawer -->
+      <div id="expandedTimerDrawer" class="hidden mt-2 pt-2 border-t border-[#3f372a] text-xs">
+        <div class="flex items-center justify-between text-amber-200/80 mb-2 font-athletic tracking-wide">
+          <span>CRONÔMETRO DE CARDIO (30 MINUTOS)</span>
+          <button onclick="toggleTimerExpanded()" class="text-[11px] underline text-amber-400">Fechar ✕</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="startCardioMode('steady')" class="bg-[#2c2419] hover:bg-[#3d3223] text-amber-100 p-2 rounded-lg border border-amber-800/40 text-left">
+            <span class="block font-bold text-xs">Modo Esteira</span>
+            <span class="block text-[10px] text-amber-300/70">30m Contínuo Zona 2</span>
+          </button>
+
+          <button onclick="startCardioMode('interval')" class="bg-[#2c2419] hover:bg-[#3d3223] text-amber-100 p-2 rounded-lg border border-amber-800/40 text-left">
+            <span class="block font-bold text-xs text-amber-300">Modo Pular Corda</span>
+            <span class="block text-[10px] text-amber-300/70">1:1 (60s Salta / 60s Pausa)</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Audio Synthesizer (Zero External Dependencies) -->
+  <script>
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) this.ctx = new AudioContextClass();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      beep(freq = 640, duration = 0.12, type = 'square') {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch (e) {
+          console.warn('Audio feedback failed', e);
+        }
+      },
+      alertFinal() {
+        this.beep(520, 0.1);
+        setTimeout(() => this.beep(520, 0.1), 150);
+        setTimeout(() => this.beep(980, 0.35), 300);
+      }
+    };
+
+    function triggerHaptic(type = 'light') {
+      if ('vibrate' in navigator) {
+        if (type === 'light') navigator.vibrate(35);
+        else if (type === 'success') navigator.vibrate([60, 40, 80]);
+      }
+    }
+  </script>
+
+  <!-- Complete Codex Workout Schedule & Logic -->
+  <script>
+    const CODEX_DATA = {
+      seg: {
+        tag: "SESSÃO A - SEGUNDA-FEIRA",
+        title: "Peitoral Inferior (Carga) + Tríceps",
+        cardioNotes: "Esteira Inclinada (8-10%, 5.0-5.5 km/h). Zona 2 contínua sem impacto articular pré-perna.",
+        cardioType: "steady",
+        exercises: [
+          {
+            id: "seg_1",
+            name: "Supino Declinado com Halteres",
+            target: "1 Top Set (6-8) + 2 Back-off (10-12)",
+            cues: "Alongamento profundo das fibras inferiores. RIR 0-1 no Top Set.",
+            sets: 3,
+            defaultKg: 32,
+            defaultReps: 8
+          },
+          {
+            id: "seg_2",
+            name: "Paralelas / Dips Convergente",
+            target: "3 séries x 8-10 reps",
+            cues: "Tronco inclinado para frente, adução escapular no final.",
+            sets: 3,
+            defaultKg: 0,
+            defaultReps: 10
+          },
+          {
+            id: "seg_3",
+            name: "Tríceps Testa com Halteres",
+            target: "3 séries x 10-12 reps",
+            cues: "Pegada neutra para preservar os cotovelos. Alongamento máximo.",
+            sets: 3,
+            defaultKg: 14,
+            defaultReps: 10
+          },
+          {
+            id: "seg_4",
+            name: "Tríceps Corda Polia Alta",
+            target: "3 séries x 12-15 reps",
+            cues: "Abertura no final da extensão com 1s de bloqueio.",
+            sets: 3,
+            defaultKg: 25,
+            defaultReps: 12
+          }
+        ]
+      },
+      ter: {
+        tag: "SESSÃO B - TERÇA-FEIRA",
+        title: "Pernas Completo (Foco Vasto Medial / Distal)",
+        cardioNotes: "Esteira Plana (4.5 a 5.2 km/h) - Drenagem regenerativa e oxigenação.",
+        cardioType: "steady",
+        exercises: [
+          {
+            id: "ter_1",
+            name: "Hack Squat (Pés baixos na chapa)",
+            target: "1 Top Set (8-10) + 2 Back-off (12 reps)",
+            cues: "Projeção de joelhos à frente para isolar quadríceps distal. RIR 1.",
+            sets: 3,
+            defaultKg: 80,
+            defaultReps: 10
+          },
+          {
+            id: "ter_2",
+            name: "Leg Press 45º",
+            target: "3 séries x 10-12 reps",
+            cues: "Descida profunda sem descolar a lombar do encosto.",
+            sets: 3,
+            defaultKg: 180,
+            defaultReps: 12
+          },
+          {
+            id: "ter_3",
+            name: "Cadeira Extensora",
+            target: "3 séries x 12-15 reps",
+            cues: "Pausa de 2 segundos no ponto de maior encurtamento do VMO.",
+            sets: 3,
+            defaultKg: 55,
+            defaultReps: 12
+          },
+          {
+            id: "ter_4",
+            name: "Mesa Flexora",
+            target: "3 séries x 10-12 reps",
+            cues: "Cadência lenta 3010. Pelve travada contra o estofado.",
+            sets: 3,
+            defaultKg: 45,
+            defaultReps: 10
+          }
+        ]
+      },
+      qua: {
+        tag: "SESSÃO C - QUARTA-FEIRA",
+        title: "Costas + Bíceps",
+        cardioNotes: "Corda Intervalada 1:1 (1 min saltando / 1 min caminhando). 15 rounds = 30 min.",
+        cardioType: "interval",
+        exercises: [
+          {
+            id: "qua_1",
+            name: "Puxada Alta Pronada",
+            target: "3 séries x 8-10 reps",
+            cues: "Tração no plano frontal, sem levar à nuca para proteger o ombro.",
+            sets: 3,
+            defaultKg: 65,
+            defaultReps: 10
+          },
+          {
+            id: "qua_2",
+            name: "Remada Baixa Triângulo",
+            target: "3 séries x 8-10 reps",
+            cues: "Retração escapular firme com peito estufado.",
+            sets: 3,
+            defaultKg: 70,
+            defaultReps: 8
+          },
+          {
+            id: "qua_3",
+            name: "Crucifixo Inverso Peck Deck",
+            target: "3 séries x 12-15 reps",
+            cues: "Isolamento de deltoide posterior e estabilizadores.",
+            sets: 3,
+            defaultKg: 40,
+            defaultReps: 12
+          },
+          {
+            id: "qua_4",
+            name: "Rosca Alternada Banco Inclinado",
+            target: "3 séries x 10-12 reps",
+            cues: "Alongamento total da cabeça longa na fase excêntrica.",
+            sets: 3,
+            defaultKg: 16,
+            defaultReps: 10
+          }
+        ]
+      },
+      qui: {
+        tag: "SESSÃO D - QUINTA-FEIRA",
+        title: "Peitoral (Adução) + Deltoides + Antebraço",
+        cardioNotes: "Esteira HIIT: 1 min caminhada rápida / 1 min trote leve alternado.",
+        cardioType: "steady",
+        exercises: [
+          {
+            id: "qui_1",
+            name: "Crossover Polia Alta (Foco Inferior)",
+            target: "3 séries x 12-15 reps",
+            cues: "Puxar as mãos em direção à bacia, cruzando os punhos.",
+            sets: 3,
+            defaultKg: 20,
+            defaultReps: 12
+          },
+          {
+            id: "qui_2",
+            name: "Desenvolvimento Halteres Sentado",
+            target: "3 séries x 8-10 reps",
+            cues: "Banco em 75-80º. RIR 1, cotovelos no plano escapular.",
+            sets: 3,
+            defaultKg: 24,
+            defaultReps: 8
+          },
+          {
+            id: "qui_3",
+            name: "Elevação Lateral na Polia",
+            target: "4 séries x 12-15 reps",
+            cues: "Polia na altura do joelho para manter tensão contínua.",
+            sets: 4,
+            defaultKg: 10,
+            defaultReps: 12
+          },
+          {
+            id: "qui_4",
+            name: "Rosca de Punho com Barra",
+            target: "3 séries x 15-20 reps",
+            cues: "Flexão máxima de punho com antebraços apoiados nas coxas.",
+            sets: 3,
+            defaultKg: 20,
+            defaultReps: 15
+          },
+          {
+            id: "qui_5",
+            name: "Extensão de Punho com Halteres",
+            target: "3 séries x 15-20 reps",
+            cues: "Fortalecimento dos extensores para antebraço denso.",
+            sets: 3,
+            defaultKg: 8,
+            defaultReps: 15
+          }
+        ]
+      },
+      sex: {
+        tag: "SESSÃO E - SEXTA-FEIRA",
+        title: "Cadeia Posterior + Levantamento Terra + Panturrilha",
+        cardioNotes: "Caminhada Inclinada Constante (Zero impacto após carga axial do Terra).",
+        cardioType: "steady",
+        exercises: [
+          {
+            id: "sex_1",
+            name: "Levantamento Terra (Convencional/Sumo)",
+            target: "3 séries x 5-6 reps",
+            cues: "Extensão pura de quadril e ativação dorsal. RIR 2 rígido.",
+            sets: 3,
+            defaultKg: 110,
+            defaultReps: 5
+          },
+          {
+            id: "sex_2",
+            name: "Stiff com Halteres",
+            target: "3 séries x 8-10 reps",
+            cues: "Alongamento forte de isquiotibiais com joelhos semi-flexionados.",
+            sets: 3,
+            defaultKg: 28,
+            defaultReps: 8
+          },
+          {
+            id: "sex_3",
+            name: "Gêmeos Sentado na Máquina",
+            target: "3 séries x 15 reps",
+            cues: "Pausa de 1 segundo na contração máxima do músculo sóleo.",
+            sets: 3,
+            defaultKg: 40,
+            defaultReps: 15
+          },
+          {
+            id: "sex_4",
+            name: "Gêmeos em Pé (Smith ou Aparelho)",
+            target: "3 séries x 12-15 reps",
+            cues: "Alongamento profundo de 2s no fundo da repetição.",
+            sets: 3,
+            defaultKg: 60,
+            defaultReps: 12
+          }
+        ]
+      },
+      sab: {
+        tag: "SESSÃO F - SÁBADO",
+        title: "Peitoral Superior + Volume de Tríceps",
+        cardioNotes: "Corda (Saltos Curtos e Agilidade) + Esteira Plana fracionado.",
+        cardioType: "interval",
+        exercises: [
+          {
+            id: "sab_1",
+            name: "Supino Inclinado com Halteres (30º)",
+            target: "3 séries x 8-10 reps",
+            cues: "Equilíbrio clavicular para completar o peitoral inferior trabalhado.",
+            sets: 3,
+            defaultKg: 30,
+            defaultReps: 8
+          },
+          {
+            id: "sab_2",
+            name: "Peck Deck (Voador Máquina)",
+            target: "3 séries x 10-12 reps",
+            cues: "Alongamento seguro sem anteriorização da cabeça do úmero.",
+            sets: 3,
+            defaultKg: 60,
+            defaultReps: 10
+          },
+          {
+            id: "sab_3",
+            name: "Tríceps Francês na Polia",
+            target: "3 séries x 10-12 reps",
+            cues: "Tensão alta na cabeça longa do tríceps em máxima amplitude.",
+            sets: 3,
+            defaultKg: 22,
+            defaultReps: 10
+          },
+          {
+            id: "sab_4",
+            name: "Tríceps Coice na Polia Baixa",
+            target: "3 séries x 12-15 reps",
+            cues: "Braço colado ao flanco e trava isométrica de 1s atrás.",
+            sets: 3,
+            defaultKg: 12,
+            defaultReps: 12
+          }
+        ]
+      }
+    };
+
+    // State
+    let activeDay = 'seg';
+    let codexStore = {
+      logs: {} // key: exerciseId_setNumber -> { weight, reps, checked }
+    };
+
+    function loadStore() {
+      try {
+        const raw = localStorage.getItem('codex_workout_sheet_v2');
+        if (raw) codexStore = JSON.parse(raw);
+      } catch (e) {
+        console.warn('LocalStorage unavailable', e);
+      }
+    }
+
+    function saveStore() {
+      try {
+        localStorage.setItem('codex_workout_sheet_v2', JSON.stringify(codexStore));
+        const ind = document.getElementById('daySyncIndicator');
+        if (ind) {
+          ind.innerText = "● Salvo";
+          ind.classList.add('text-inkStampGreen');
+          setTimeout(() => {
+            ind.innerText = "● Gravado Localmente";
+            ind.classList.remove('text-inkStampGreen');
+          }, 1200);
+        }
+      } catch (e) {
+        console.warn('Storage save failed', e);
+      }
+    }
+
+    function changeDay(dayKey) {
+      activeDay = dayKey;
+      renderDayTabs();
+      renderDayContent();
+    }
+
+    function renderDayTabs() {
+      const keys = ['seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
+      keys.forEach(k => {
+        const btn = document.getElementById(`tab_${k}`);
+        if (!btn) return;
+        if (k === activeDay) {
+          btn.className = "flex-shrink-0 px-2.5 py-1.5 rounded-lg border-2 border-inkBlue bg-inkBlue text-white text-center transition font-athletic tracking-wide shadow-md";
+        } else {
+          btn.className = "flex-shrink-0 px-2.5 py-1.5 rounded-lg border-2 border-carbonPaper/30 bg-cardboard text-carbonPaper text-center transition font-athletic tracking-wide hover:border-carbonPaper/60";
+        }
+      });
+    }
+
+    function renderDayContent() {
+      const data = CODEX_DATA[activeDay];
+      document.getElementById('workoutDayTag').innerText = data.tag;
+      document.getElementById('workoutDayTitle').innerText = data.title;
+      document.getElementById('workoutCardioNotes').innerText = data.cardioNotes;
+
+      const container = document.getElementById('exerciseCardContainer');
+      container.innerHTML = '';
+
+      data.exercises.forEach((ex, idx) => {
+        const card = document.createElement('div');
+        card.className = "bg-cardboardLight/80 rounded-xl border border-carbonPaper/30 p-3 shadow-sm";
+
+        let setsMarkup = '';
+        for (let s = 1; s <= ex.sets; s++) {
+          const key = `${ex.id}_${s}`;
+          const current = codexStore.logs[key] || { weight: ex.defaultKg, reps: ex.defaultReps, checked: false };
+
+          setsMarkup += `
+            <div class="flex items-center justify-between gap-1 py-1 border-b border-carbonPaper/15 last:border-none">
+              <span class="font-mono text-[11px] font-bold w-12 text-carbonPaper/80">SÉRIE ${s}</span>
+              
+              <!-- WEIGHT STEPPER -->
+              <div class="flex items-center bg-cardboard border border-carbonPaper/30 rounded-lg overflow-hidden">
+                <button onclick="stepValue('${key}', 'weight', -2)" class="stepper-btn px-2 py-1 bg-carbonPaper/10 text-carbonPaper active:bg-carbonPaper/30 font-bold text-xs select-none">－</button>
+                <div class="px-1.5 text-center min-w-[48px]">
+                  <span id="val_weight_${key}" class="font-mono font-bold text-xs text-inkBlue">${current.weight}</span>
+                  <span class="text-[9px] text-carbonPaper/60">kg</span>
+                </div>
+                <button onclick="stepValue('${key}', 'weight', 2)" class="stepper-btn px-2 py-1 bg-carbonPaper/10 text-carbonPaper active:bg-carbonPaper/30 font-bold text-xs select-none">＋</button>
+              </div>
+
+              <!-- REPS STEPPER -->
+              <div class="flex items-center bg-cardboard border border-carbonPaper/30 rounded-lg overflow-hidden">
+                <button onclick="stepValue('${key}', 'reps', -1)" class="stepper-btn px-2 py-1 bg-carbonPaper/10 text-carbonPaper active:bg-carbonPaper/30 font-bold text-xs select-none">－</button>
+                <div class="px-1.5 text-center min-w-[42px]">
+                  <span id="val_reps_${key}" class="font-mono font-bold text-xs text-inkBlue">${current.reps}</span>
+                  <span class="text-[9px] text-carbonPaper/60">rep</span>
+                </div>
+                <button onclick="stepValue('${key}', 'reps', 1)" class="stepper-btn px-2 py-1 bg-carbonPaper/10 text-carbonPaper active:bg-carbonPaper/30 font-bold text-xs select-none">＋</button>
+              </div>
+
+              <!-- BALLPOINT PEN CHECK BUTTON -->
+              <button onclick="toggleSet('${key}')" 
+                class="w-8 h-8 rounded-lg flex items-center justify-center border-2 transition active:scale-90 ${current.checked ? 'border-inkBlue bg-inkBlue/10 text-inkBlue' : 'border-carbonPaper/30 bg-cardboard text-transparent'}">
+                <span class="font-script font-bold text-2xl leading-none">✕</span>
+              </button>
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between">
+            <div>
+              <span class="text-[10px] font-mono text-carbonPaper/60 font-bold">#0${idx + 1}</span>
+              <h3 class="font-athletic text-base font-bold text-carbonPaper leading-tight uppercase">${ex.name}</h3>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-carbonPaper/10 px-2 py-0.5 rounded border border-carbonPaper/20">${ex.target}</span>
+          </div>
+          <p class="text-[11px] text-carbonPaper/80 font-mono mt-1 mb-2 bg-cardboard/60 p-1.5 rounded border border-carbonPaper/10">
+            <strong>Instrução:</strong> ${ex.cues}
+          </p>
+          <div class="space-y-1">
+            ${setsMarkup}
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      lucide.createIcons();
+    }
+
+    function stepValue(key, field, delta) {
+      if (!codexStore.logs[key]) {
+        codexStore.logs[key] = { weight: 0, reps: 0, checked: false };
+      }
+      let val = Number(codexStore.logs[key][field]) || 0;
+      val = Math.max(0, val + delta);
+      codexStore.logs[key][field] = val;
+      
+      const el = document.getElementById(`val_${field}_${key}`);
+      if (el) el.innerText = val;
+      
+      triggerHaptic('light');
+      saveStore();
+    }
+
+    function toggleSet(key) {
+      if (!codexStore.logs[key]) {
+        codexStore.logs[key] = { weight: 0, reps: 0, checked: false };
+      }
+      codexStore.logs[key].checked = !codexStore.logs[key].checked;
+      
+      if (codexStore.logs[key].checked) {
+        AudioEngine.beep(800, 0.08);
+        triggerHaptic('success');
+        // Auto start 90s rest if timer isn't running
+        if (!casioTimer) {
+          startQuickRest(90);
+        }
+      }
+      saveStore();
+      renderDayContent();
+    }
+
+    function resetCurrentDay() {
+      const confirmed = window.confirm("Deseja zerar os vistos e anotações deste dia?");
+      if (!confirmed) return;
+      const data = CODEX_DATA[activeDay];
+      data.exercises.forEach(ex => {
+        for (let s = 1; s <= ex.sets; s++) {
+          const key = `${ex.id}_${s}`;
+          if (codexStore.logs[key]) codexStore.logs[key].checked = false;
+        }
+      });
+      saveStore();
+      renderDayContent();
+    }
+
+    // ==========================================
+    // CASIO RETRO STOPWATCH & CARDIO CONTROLLER
+    // ==========================================
+    let casioTimer = null;
+    let casioRemaining = 90;
+    let casioCurrentMode = 'rest'; // 'rest' | 'cardio_steady' | 'cardio_interval'
+    let cardioJumpPhase = 'work'; // 'work' (1 min) | 'rest' (1 min)
+    let cardioPhaseSeconds = 60;
+
+    function formatLcd(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function updateCasioLcd() {
+      const display = document.getElementById('casioTimerDisplay');
+      if (display) display.innerText = formatLcd(casioRemaining);
+    }
+
+    function startQuickRest(seconds) {
+      stopCasio();
+      casioCurrentMode = 'rest';
+      casioRemaining = seconds;
+      document.getElementById('casioModeLabel').innerText = "DESCANSO";
+      document.getElementById('casioSubLabel').innerText = `${seconds}s PRESET`;
+      updateCasioLcd();
+      startCasio();
+    }
+
+    function toggleCasioTimer() {
+      if (casioTimer) {
+        stopCasio();
+      } else {
+        startCasio();
+      }
+    }
+
+    function startCasio() {
+      if (casioRemaining <= 0) casioRemaining = 90;
+      if (casioTimer) clearInterval(casioTimer);
+
+      document.getElementById('casioStatusIcon').innerText = "CONTANDO";
+      document.getElementById('casioActionIcon').setAttribute('data-lucide', 'pause');
+      lucide.createIcons();
+
+      AudioEngine.beep(700, 0.05);
+
+      casioTimer = setInterval(() => {
+        casioRemaining--;
+        updateCasioLcd();
+
+        // 3-2-1 Beeps for countdown
+        if (casioRemaining <= 3 && casioRemaining > 0) {
+          AudioEngine.beep(550, 0.08);
+          triggerHaptic('light');
+        }
+
+        // Interval alert for jump rope (1:1)
+        if (casioCurrentMode === 'cardio_interval') {
+          cardioPhaseSeconds--;
+          if (cardioPhaseSeconds <= 3 && cardioPhaseSeconds > 0) {
+            AudioEngine.beep(600, 0.08);
+          }
+          if (cardioPhaseSeconds <= 0) {
+            cardioPhaseSeconds = 60;
+            if (cardioJumpPhase === 'work') {
+              cardioJumpPhase = 'rest';
+              document.getElementById('casioSubLabel').innerText = "PAUSA 60s";
+              AudioEngine.beep(420, 0.35, 'triangle');
+            } else {
+              cardioJumpPhase = 'work';
+              document.getElementById('casioSubLabel').innerText = "PULAR 60s!";
+              AudioEngine.alertFinal();
+            }
+          }
+        }
+
+        if (casioRemaining <= 0) {
+          stopCasio();
+          AudioEngine.alertFinal();
+          triggerHaptic('success');
+          document.getElementById('casioStatusIcon').innerText = "FIM!";
+        }
+      }, 1000);
+    }
+
+    function stopCasio() {
+      if (casioTimer) {
+        clearInterval(casioTimer);
+        casioTimer = null;
+      }
+      document.getElementById('casioStatusIcon').innerText = "PARADO";
+      document.getElementById('casioActionIcon').setAttribute('data-lucide', 'play');
+      lucide.createIcons();
+    }
+
+    function toggleTimerExpanded() {
+      const drawer = document.getElementById('expandedTimerDrawer');
+      drawer.classList.toggle('hidden');
+    }
+
+    function openCardioPreset() {
+      const data = CODEX_DATA[activeDay];
+      startCardioMode(data.cardioType);
+    }
+
+    function startCardioMode(type) {
+      stopCasio();
+      casioRemaining = 30 * 60; // 30 min
+      if (type === 'interval') {
+        casioCurrentMode = 'cardio_interval';
+        cardioJumpPhase = 'work';
+        cardioPhaseSeconds = 60;
+        document.getElementById('casioModeLabel').innerText = "CORDA 1:1";
+        document.getElementById('casioSubLabel').innerText = "PULAR 60s!";
+      } else {
+        casioCurrentMode = 'cardio_steady';
+        document.getElementById('casioModeLabel').innerText = "ESTEIRA Z2";
+        document.getElementById('casioSubLabel').innerText = "30 MIN";
+      }
+      updateCasioLcd();
+      startCasio();
+      const drawer = document.getElementById('expandedTimerDrawer');
+      if (!drawer.classList.contains('hidden')) drawer.classList.add('hidden');
+    }
+
+    // ==========================================
+    // PWA INSTALLATION HOOKS
+    // ==========================================
+    let deferredInstallPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const btn = document.getElementById('pwaInstallBtn');
+      if (btn) btn.classList.remove('hidden');
+    });
+
+    function installCodexApp() {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        deferredInstallPrompt.userChoice.then(() => {
+          deferredInstallPrompt = null;
+          document.getElementById('pwaInstallBtn').classList.add('hidden');
+        });
+      } else {
+        alert("Para instalar na tela inicial:\n\n• No Android/Chrome: Toque nos 3 pontos no topo e em 'Adicionar à tela inicial'.\n• No iPhone/Safari: Toque no botão Compartilhar (quadrado com seta) e em 'Adicionar à Tela de Início'.");
+      }
+    }
+
+    // Register Service Worker if exists
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {
+          // Silent fallback when running locally or before sw.js is added to GitHub
+        });
+      });
+    }
+
+    // Init App
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStore();
+      // Select current day automatically
+      const dayMap = ['seg', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
+      const today = new Date().getDay();
+      activeDay = dayMap[today] || 'seg';
+
+      renderDayTabs();
+      renderDayContent();
+      updateCasioLcd();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
